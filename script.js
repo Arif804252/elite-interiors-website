@@ -275,6 +275,45 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // PDF Modal functionality
+    const pdfModal = document.getElementById('pdfModal');
+    const pdfViewer = document.getElementById('pdfViewer');
+    const pdfModalClose = document.getElementById('pdfModalClose');
+    const pdfViewButtons = document.querySelectorAll('.pdf-view-btn');
+
+    if (pdfModal && pdfViewer && pdfModalClose) {
+        pdfViewButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const pdfUrl = this.getAttribute('href');
+                pdfViewer.src = pdfUrl;
+                pdfModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        pdfModalClose.addEventListener('click', () => {
+            pdfModal.classList.remove('active');
+            pdfViewer.src = '';
+            document.body.style.overflow = 'visible';
+        });
+
+        pdfModal.addEventListener('click', function(e) {
+            if (e.target === pdfModal) {
+                pdfModal.classList.remove('active');
+                pdfViewer.src = '';
+                document.body.style.overflow = 'visible';
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && pdfModal.classList.contains('active')) {
+                pdfModal.classList.remove('active');
+                pdfViewer.src = '';
+                document.body.style.overflow = 'visible';
+            }
+        });
+    }
 
     // Add loaded class to body for initial animations
     document.body.classList.add('loaded');
