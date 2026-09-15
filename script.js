@@ -315,6 +315,51 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Video Modal functionality
+    const videoModal = document.getElementById('videoModal');
+    const videoPlayer = document.getElementById('videoPlayer');
+    const videoModalClose = document.getElementById('videoModalClose');
+    const videoThumbnails = document.querySelectorAll('.video-thumbnail');
+
+    if (videoModal && videoPlayer && videoModalClose) {
+        videoThumbnails.forEach(thumb => {
+            thumb.addEventListener('click', function() {
+                const videoUrl = this.getAttribute('data-video');
+                const source = videoPlayer.querySelector('source');
+                source.src = videoUrl;
+                videoPlayer.load();
+                videoModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                videoPlayer.play();
+            });
+        });
+
+        videoModalClose.addEventListener('click', () => {
+            videoModal.classList.remove('active');
+            videoPlayer.pause();
+            videoPlayer.querySelector('source').src = '';
+            document.body.style.overflow = 'visible';
+        });
+
+        videoModal.addEventListener('click', function(e) {
+            if (e.target === videoModal) {
+                videoModal.classList.remove('active');
+                videoPlayer.pause();
+                videoPlayer.querySelector('source').src = '';
+                document.body.style.overflow = 'visible';
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && videoModal.classList.contains('active')) {
+                videoModal.classList.remove('active');
+                videoPlayer.pause();
+                videoPlayer.querySelector('source').src = '';
+                document.body.style.overflow = 'visible';
+            }
+        });
+    }
+
     // Add loaded class to body for initial animations
     document.body.classList.add('loaded');
 });
